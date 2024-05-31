@@ -1,14 +1,14 @@
 <?php
-require_once '../Config/config.php'; // Asegúrate de incluir el archivo de la clase Database
+require_once '../Config/config.php'; 
 
-// Verificar si se ha enviado un ID de empleado para editar
+
 if (isset($_GET['id'])) {
-    // Obtener el ID del empleado a editar
+  
     $id_empleado = $_GET['id'];
 
-    // Verificar si se ha enviado el formulario de edición
+  
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        // Obtener los datos del formulario de edición
+      
         $nombre = $_POST['Nombre'];
         $cedula = $_POST['Cedula'];
         $contrasena = $_POST['Contrasena'];
@@ -19,16 +19,16 @@ if (isset($_GET['id'])) {
         $estacion_id = $_POST['Estacion_ID'];
         $rol_id = $_POST['Roles'];
 
-        // Crear una instancia de la clase Database
+      
         $database = new Database1();
-        // Obtener la conexión a la base de datos
+       
         $conn = $database->getConnection();
 
         try {
-            // Preparar la consulta para actualizar el empleado
+            
             $query = "UPDATE trabajadores SET Nombre = :nombre, Cedula = :cedula, Contrasena = :contrasena, Apellido1 = :apellido1, Apellido2 = :apellido2, Correo_Electronico = :correo, Salario = :salario, Estacion_ID = :estacion_id, Rol_ID = :rol_id WHERE ID = :id";
             $stmt = $conn->prepare($query);
-            // Vincular parámetros
+            
             $stmt->bindParam(':nombre', $nombre);
             $stmt->bindParam(':cedula', $cedula);
             $stmt->bindParam(':contrasena', $contrasena);
@@ -39,11 +39,11 @@ if (isset($_GET['id'])) {
             $stmt->bindParam(':estacion_id', $estacion_id);
             $stmt->bindParam(':rol_id', $rol_id);
             $stmt->bindParam(':id', $id_empleado);
-            // Ejecutar la consulta
+           
             if ($stmt->execute()) {
-                // Mostrar un mensaje indicando que el empleado fue actualizado
+              
                 echo "Empleado actualizado exitosamente.";
-                // Recargar la página actual utilizando JavaScript
+               
                 echo '<script>setTimeout(function(){ location.reload(); }, 2000);</script>';
                 exit;
             } else {
@@ -53,21 +53,20 @@ if (isset($_GET['id'])) {
             echo "Error: " . $exception->getMessage();
         }
     } else {
-        // Si no se ha enviado el formulario de edición, mostrar el formulario con los datos actuales del empleado
-        // Crear una instancia de la clase Database
+        
         $database = new Database1();
-        // Obtener la conexión a la base de datos
+      
         $conn = $database->getConnection();
 
         try {
-            // Preparar la consulta para obtener los datos del empleado
+        
             $query = "SELECT * FROM trabajadores WHERE ID = :id";
             $stmt = $conn->prepare($query);
-            // Vincular parámetros
+
             $stmt->bindParam(':id', $id_empleado);
-            // Ejecutar la consulta
+           
             $stmt->execute();
-            // Obtener los datos del empleado
+        
             $empleado = $stmt->fetch(PDO::FETCH_ASSOC);
 
             
@@ -111,7 +110,7 @@ if (isset($_GET['id'])) {
         }
     }
 } else {
-    // Si no se ha enviado un ID de empleado, redirigir a la página principal
+   
     header("Location: ../Vista/ListaDeEmpleados");
     exit;
 }

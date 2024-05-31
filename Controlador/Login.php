@@ -22,16 +22,16 @@ class AuthController {
                 $rol = $user['Rol_ID'];
                 $nombre_rol = $this->ValidarCredenciales->getRoleName($rol);
 
-                // Guardar la información del usuario en la sesión
+               
                 $_SESSION['user'] = [
                     'nombre' => $nombre,
                     'rol_id' => $rol,
                     'nombre_rol' => $nombre_rol
                 ];
 
-                // Redirigir al formulario index.php
+              
                 header("Location: ../Vista/Inicio.php");
-                exit(); // Asegurarse de que se detenga la ejecución del script
+                exit();
             } else {
                 echo "Credenciales inválidas. Acceso denegado.";
             }
@@ -41,7 +41,7 @@ class AuthController {
     }
 
     public function logout() {
-        // Destruir la sesión
+       
         session_unset();
         session_destroy();
         echo "Sesión cerrada.";

@@ -5,7 +5,7 @@ if (session_status() == PHP_SESSION_NONE) {
 require_once '../Controlador/Empleados.php';
 require_once '../Modelo/Ingreso_Usuario.php';
 
-$controller = new EmpleadoController1(); // Crear una instancia del controlador
+$controller = new EmpleadoController1(); 
 
 $controller->mostrarEmpleados();
 $trabajadoresTabla = new TrabajadoresTabla();
