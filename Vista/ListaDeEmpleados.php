@@ -35,10 +35,11 @@ require_once '../Controlador/Empleados.php';
                     <th scope="col">Salario</th>
                     <th scope="col">Estación ID</th>
                     <th scope="col">Rol ID</th>
+                    <th scope="col">Acciones</th> 
                 </tr>
             </thead>
             <tbody>
-                <?php if(isset($controller->resultTrabajadores)): ?>
+                <?php if (isset($controller->resultTrabajadores)) : ?>
                     <?php foreach ($controller->resultTrabajadores as $usuario) : ?>
                         <tr>
                             <th scope="row"><?php echo $usuario['ID']; ?></th>
@@ -51,15 +52,21 @@ require_once '../Controlador/Empleados.php';
                             <td><?php echo $usuario['Salario']; ?></td>
                             <td><?php echo $usuario['Estacion_ID']; ?></td>
                             <td><?php echo $usuario['Rol_ID']; ?></td>
+                            <td>
+                                <a href="../Controlador/EditarUsuario.php?id=<?php echo $usuario['ID']; ?>" class="btn btn-primary btn-sm">Editar</a>
+                                <br><br>
+                                <a href="../Controlador/EliminarEmpleado.php?id=<?php echo $usuario['ID']; ?>" class="btn btn-danger btn-sm">Eliminar</a>
+                            </td>
                         </tr>
                     <?php endforeach; ?>
-                <?php else: ?>
+                <?php else : ?>
                     <tr>
-                        <td colspan="10">No hay datos disponibles</td>
+                        <td colspan="11">No hay datos disponibles</td>
                     </tr>
                 <?php endif; ?>
             </tbody>
         </table>
+        <center><a href="../Vista/Form_NuevoIngreso.php" class="btn btn-info" role="button">Crear Nuevo Usuario</a></center>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>

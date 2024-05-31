@@ -5,6 +5,7 @@ $user = isset($_SESSION['user']) ? $_SESSION['user'] : null;
 ?>
 
 <header>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <nav class="navbar navbar-dark bg-dark fixed-top">
         <div class="container-fluid">
             <a class="navbar-brand" href="../Vista/Inicio.php">
@@ -38,8 +39,9 @@ $user = isset($_SESSION['user']) ? $_SESSION['user'] : null;
                         <li class="nav-item">
                             <a class="nav-link" aria-current="page" href="../Vista/Form_NuevoIngreso.php">Ingresar usuario</a>
                         </li>
+                        
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Link</a>
+                            <a class="nav-link" href="../Vista/ListaDeEmpleados.php">Lista de Empleados</a>
                         </li>
             
                     </ul>

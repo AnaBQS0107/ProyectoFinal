@@ -18,7 +18,7 @@ require_once '../Modelo/Ingreso_Usuario.php';
     <header>
         <?php include 'header.php'; ?>
     </header>
-    <br><br>
+    <br><br><br><br><br>
     <div class="container">
         <form method="post" action="../Controlador/TrabajadoresInfo.php" class="row g-3 needs-validation" novalidate>
             <div class="col-md-4 position-relative">
