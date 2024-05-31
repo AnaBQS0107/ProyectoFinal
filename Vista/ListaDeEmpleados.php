@@ -2,6 +2,7 @@
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
+
 require_once '../Controlador/Empleados.php';
 require_once '../Modelo/Ingreso_Usuario.php';
 

@@ -5,7 +5,9 @@ $user = isset($_SESSION['user']) ? $_SESSION['user'] : null;
 ?>
 
 <header>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
     <nav class="navbar navbar-dark bg-dark fixed-top">
         <div class="container-fluid">
             <a class="navbar-brand" href="../Vista/Inicio.php">
@@ -22,16 +24,16 @@ $user = isset($_SESSION['user']) ? $_SESSION['user'] : null;
                 </div>
                 <div class="offcanvas-body">
                     <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-                    <?php if ($user): ?>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <?php echo htmlspecialchars($user['nombre']); ?> (<?php echo htmlspecialchars($user['nombre_rol']); ?>)
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-dark">
-                                <li><a class="dropdown-item" href="#">Perfil</a></li>
-                                <li><a class="dropdown-item" href="../Vista/Index.php">Cerrar sesión</a></li>
-                            </ul>
-                        </li>
+                        <?php if ($user) : ?>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <?php echo htmlspecialchars($user['nombre']); ?> (<?php echo htmlspecialchars($user['nombre_rol']); ?>)
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-dark">
+                                    <li><a class="dropdown-item" href="#">Perfil</a></li>
+                                    <li><a class="dropdown-item" href="../Vista/Index.php">Cerrar sesión</a></li>
+                                </ul>
+                            </li>
                         <?php endif; ?>
                         <li class="nav-item">
                             <a class="nav-link" aria-current="page" href="../Vista/Inicio.php">Página Principal</a>
@@ -39,11 +41,11 @@ $user = isset($_SESSION['user']) ? $_SESSION['user'] : null;
                         <li class="nav-item">
                             <a class="nav-link" aria-current="page" href="../Vista/Form_NuevoIngreso.php">Ingresar usuario</a>
                         </li>
-                        
+
                         <li class="nav-item">
                             <a class="nav-link" href="../Vista/ListaDeEmpleados.php">Lista de Empleados</a>
                         </li>
-            
+
                     </ul>
                 </div>
             </div>

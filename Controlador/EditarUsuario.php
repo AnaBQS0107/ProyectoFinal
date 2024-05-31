@@ -1,14 +1,14 @@
 <?php
-require_once '../Config/config.php'; 
+require_once '../Config/config.php';
 
 
 if (isset($_GET['id'])) {
-  
+
     $id_empleado = $_GET['id'];
 
-  
+
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-      
+
         $nombre = $_POST['Nombre'];
         $cedula = $_POST['Cedula'];
         $contrasena = $_POST['Contrasena'];
@@ -19,16 +19,17 @@ if (isset($_GET['id'])) {
         $estacion_id = $_POST['Estacion_ID'];
         $rol_id = $_POST['Roles'];
 
-      
+
         $database = new Database1();
-       
+
         $conn = $database->getConnection();
 
+
         try {
-            
+
             $query = "UPDATE trabajadores SET Nombre = :nombre, Cedula = :cedula, Contrasena = :contrasena, Apellido1 = :apellido1, Apellido2 = :apellido2, Correo_Electronico = :correo, Salario = :salario, Estacion_ID = :estacion_id, Rol_ID = :rol_id WHERE ID = :id";
             $stmt = $conn->prepare($query);
-            
+
             $stmt->bindParam(':nombre', $nombre);
             $stmt->bindParam(':cedula', $cedula);
             $stmt->bindParam(':contrasena', $contrasena);
@@ -39,11 +40,11 @@ if (isset($_GET['id'])) {
             $stmt->bindParam(':estacion_id', $estacion_id);
             $stmt->bindParam(':rol_id', $rol_id);
             $stmt->bindParam(':id', $id_empleado);
-           
+
             if ($stmt->execute()) {
-              
+
                 echo "Empleado actualizado exitosamente.";
-               
+
                 echo '<script>setTimeout(function(){ location.reload(); }, 2000);</script>';
                 exit;
             } else {
@@ -53,23 +54,23 @@ if (isset($_GET['id'])) {
             echo "Error: " . $exception->getMessage();
         }
     } else {
-        
+
         $database = new Database1();
-      
+
         $conn = $database->getConnection();
 
         try {
-        
+
             $query = "SELECT * FROM trabajadores WHERE ID = :id";
             $stmt = $conn->prepare($query);
 
             $stmt->bindParam(':id', $id_empleado);
-           
+
             $stmt->execute();
-        
+
             $empleado = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            
+
 ?>
             <?php
             include_once '../Vista/header.php' ?>
@@ -102,7 +103,7 @@ if (isset($_GET['id'])) {
                 <label>Rol ID:</label>
                 <input type="text" name="Roles" value="<?php echo isset($empleado['Rol_ID']) ? $empleado['Rol_ID'] : ''; ?>">
                 <br> <br>
-                <button type="submit">Actualizar</button>
+                <button type="button" id="updateButton">Actualizar</button>
             </form>
 <?php
         } catch (PDOException $exception) {
@@ -110,8 +111,26 @@ if (isset($_GET['id'])) {
         }
     }
 } else {
-   
+
     header("Location: ../Vista/ListaDeEmpleados");
     exit;
 }
 ?>
+
+
+<script>
+    document.getElementById('updateButton').addEventListener('click', function() {
+        swal({
+            title: "¡Usuario actualizado con éxito!",
+            text: "Por favor presiona el botón",
+            icon: "success",
+            button: "Volver a la tabla",
+        }).then((willUpdate) => {
+            if (willUpdate) {
+                window.location.href = '../Vista/ListaDeEmpleados.php';
+            } else {
+                swal("La información del empleado no se ha actualizado.");
+            }
+        });
+    });
+</script>
