@@ -5,7 +5,7 @@ if (session_status() == PHP_SESSION_NONE) {
 require_once '../Controlador/Empleados.php';
 require_once '../Modelo/Ingreso_Usuario.php';
 
-$controller = new EmpleadoController1(); 
+$controller = new EmpleadoController1();
 
 $controller->mostrarEmpleados();
 $trabajadoresTabla = new TrabajadoresTabla();
@@ -59,12 +59,59 @@ $trabajadoresTabla = new TrabajadoresTabla();
                             <td><?php echo $usuario['Salario']; ?></td>
                             <td><?php echo $trabajadoresTabla->obtenerNombreEstacion($usuario['Estacion_ID']); ?></td>
                             <td><?php echo $trabajadoresTabla->obtenerTipoDeRol($usuario['Rol_ID']); ?></td>
-                             <td>
+                            <td>
                                 <a href="../Controlador/EditarUsuario.php?id=<?php echo $usuario['ID']; ?>" class="btn btn-primary btn-sm">Editar</a>
                                 <br><br>
-                                <a href="../Controlador/EliminarEmpleado.php?id=<?php echo $usuario['ID']; ?>" class="btn btn-danger btn-sm">Eliminar</a>
+                                <a href="#" data-id="<?php echo $usuario['ID']; ?>" class="btn btn-danger btn-sm delete-link">Eliminar</a>
                             </td>
-</tr>
+
+                            <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+                            <script>
+                                document.querySelectorAll('.delete-link').forEach(link => {
+                                    link.addEventListener('click', function(event) {
+                                        event.preventDefault(); 
+                                        const employeeId = this.getAttribute('data-id');
+
+                                        swal({
+                                            title: "¿Seguro que deseas borrar este usuario?",
+                                            text: "Una vez eliminado no podrás recuperarlo",
+                                            icon: "warning",
+                                            buttons: true,
+                                            dangerMode: true,
+                                        }).then((willDelete) => {
+                                            if (willDelete) {
+                                                fetch(`../Controlador/EliminarEmpleado.php?id=${employeeId}`, {
+                                                        method: 'GET'
+                                                    })
+                                                    .then(response => response.text())
+                                                    .then(data => {
+                                                        if (data.trim() === 'success') {
+                                                            swal("Usuario eliminado con exito", {
+                                                                icon: "success",
+                                                            }).then(() => {
+                                                             
+                                                                location.reload();
+                                                            });
+                                                        } else {
+                                                            swal("No se pudo eliminar este usuario", {
+                                                                icon: "error",
+                                                            });
+                                                        }
+                                                    })
+                                                    .catch(error => {
+                                                        swal("Error: " + error, {
+                                                            icon: "error",
+                                                        });
+                                                    });
+                                            } else {
+                                                swal("El usuario permanecerá en la base de datos");
+                                            }
+                                        });
+                                    });
+                                });
+                            </script>
+
+                        </tr>
                     <?php endforeach; ?>
                 <?php else : ?>
                     <tr>

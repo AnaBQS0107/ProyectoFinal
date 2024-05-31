@@ -1,24 +1,19 @@
 <?php
-require_once '../Config/config.php'; 
+require_once '../Config/config.php';
 
-if(isset($_GET['id'])) {
-  
+if (isset($_GET['id'])) {
     $id_empleado = $_GET['id'];
-    
- 
-    $database = new Database1();
 
+    $database = new Database1();
     $conn = $database->getConnection();
-    
+
     try {
-      
         $query = "DELETE FROM trabajadores WHERE ID = :id";
         $stmt = $conn->prepare($query);
-
         $stmt->bindParam(':id', $id_empleado);
 
         if ($stmt->execute()) {
-            header("Location: ../Vista/ListaDeEmpleados.php");
+            echo "success";
         } else {
             echo "Error al eliminar el empleado.";
         }
@@ -26,8 +21,6 @@ if(isset($_GET['id'])) {
         echo "Error: " . $exception->getMessage();
     }
 } else {
- 
-    header("Location: ../Vista/ListaDeEmpleados.php");
-    exit;
+    echo "Invalid request.";
 }
 ?>
