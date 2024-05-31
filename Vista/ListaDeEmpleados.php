@@ -3,6 +3,13 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 require_once '../Controlador/Empleados.php';
+require_once '../Modelo/Ingreso_Usuario.php';
+
+$controller = new EmpleadoController1(); // Crear una instancia del controlador
+
+$controller->mostrarEmpleados();
+$trabajadoresTabla = new TrabajadoresTabla();
+
 ?>
 
 <!DOCTYPE html>
@@ -35,7 +42,7 @@ require_once '../Controlador/Empleados.php';
                     <th scope="col">Salario</th>
                     <th scope="col">Estación ID</th>
                     <th scope="col">Rol ID</th>
-                    <th scope="col">Acciones</th> 
+                    <th scope="col">Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -50,18 +57,18 @@ require_once '../Controlador/Empleados.php';
                             <td><?php echo $usuario['Apellido2']; ?></td>
                             <td><?php echo $usuario['Correo_Electronico']; ?></td>
                             <td><?php echo $usuario['Salario']; ?></td>
-                            <td><?php echo $usuario['Estacion_ID']; ?></td>
-                            <td><?php echo $usuario['Rol_ID']; ?></td>
-                            <td>
+                            <td><?php echo $trabajadoresTabla->obtenerNombreEstacion($usuario['Estacion_ID']); ?></td>
+                            <td><?php echo $trabajadoresTabla->obtenerTipoDeRol($usuario['Rol_ID']); ?></td>
+                             <td>
                                 <a href="../Controlador/EditarUsuario.php?id=<?php echo $usuario['ID']; ?>" class="btn btn-primary btn-sm">Editar</a>
                                 <br><br>
                                 <a href="../Controlador/EliminarEmpleado.php?id=<?php echo $usuario['ID']; ?>" class="btn btn-danger btn-sm">Eliminar</a>
                             </td>
-                        </tr>
+</tr>
                     <?php endforeach; ?>
                 <?php else : ?>
                     <tr>
-                        <td colspan="11">No hay datos disponibles</td>
+                        <td colspan="10">No hay datos disponibles</td>
                     </tr>
                 <?php endif; ?>
             </tbody>

@@ -21,24 +21,44 @@ class Database
     }
 }
 
-class TrabajadoresTabla{
+class TrabajadoresTabla
+{
     private $db;
-  
 
     public function __construct()
     {
         $database = new Database();
         $this->db = $database->getConnection();
-
     }
+
     public function obtenerTodosLosTrabajadores()
     {
-        $query = "SELECT * FROM trabajadores";
+        $query = "SELECT t.*, r.Tipo_De_Rol, e.Nombre AS Nombre_Estacion 
+                  FROM trabajadores t
+                  LEFT JOIN roles r ON t.Rol_ID = r.ID
+                  LEFT JOIN estaciones e ON t.Estacion_ID = e.ID";
         $stmt = $this->db->prepare($query);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function obtenerNombreEstacion($estacionID)
+    {
+        $estacion = new Estacion($this->db);
+        $result = $estacion->obtenerEstacionPorID($estacionID);
+        $row = $result->fetch(PDO::FETCH_ASSOC);
+        return $row['Nombre'];
+    }
+
+    public function obtenerTipoDeRol($rolID)
+    {
+        $rol = new Rol($this->db);
+        $result = $rol->obtenerRolPorID($rolID);
+        $row = $result->fetch(PDO::FETCH_ASSOC);
+        return $row['Tipo_De_Rol'];
+    }
 }
+
 
 class Rol
 {
@@ -57,6 +77,14 @@ class Rol
         $stmt->execute();
         return $stmt;
     }
+    public function obtenerRolPorID($rolID) {
+        $query = "SELECT * FROM " . $this->table_name . " WHERE ID = :id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':id', $rolID);
+        $stmt->execute();
+        return $stmt;
+    }
+   
 }
 
 
@@ -74,6 +102,14 @@ class Estacion
     {
         $query = "SELECT ID, Nombre FROM " . $this->table_name;
         $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        return $stmt;
+    }
+
+    public function obtenerEstacionPorID($estacionID) {
+        $query = "SELECT * FROM " . $this->table_name . " WHERE ID = :id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':id', $estacionID);
         $stmt->execute();
         return $stmt;
     }
@@ -129,7 +165,7 @@ class TrabajadoresInfo
                 echo "Error al registrar.";
             }
         } catch (PDOException $e) {
-           
+
             echo "Error al insertar registro: " . $e->getMessage() . "<br>";
             echo "Detalles del error: " . json_encode($stmt->errorInfo());
         }
@@ -147,6 +183,3 @@ $resultRoles = $trabajadoresInfo->obtenerRoles();
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $trabajadoresInfo->procesarFormulario($_POST);
 }
-
-
-
