@@ -40,7 +40,6 @@ $trabajadoresTabla = new TrabajadoresTabla();
                     <th scope="col">Apellido 1</th>
                     <th scope="col">Apellido 2</th>
                     <th scope="col">Correo Electrónico</th>
-                    <th scope="col">Salario</th>
                     <th scope="col">Estación ID</th>
                     <th scope="col">Rol ID</th>
                     <th scope="col">Acciones</th>
@@ -57,7 +56,6 @@ $trabajadoresTabla = new TrabajadoresTabla();
                             <td><?php echo $usuario['Apellido1']; ?></td>
                             <td><?php echo $usuario['Apellido2']; ?></td>
                             <td><?php echo $usuario['Correo_Electronico']; ?></td>
-                            <td><?php echo $usuario['Salario']; ?></td>
                             <td><?php echo $trabajadoresTabla->obtenerNombreEstacion($usuario['Estacion_ID']); ?></td>
                             <td><?php echo $trabajadoresTabla->obtenerTipoDeRol($usuario['Rol_ID']); ?></td>
                             <td>

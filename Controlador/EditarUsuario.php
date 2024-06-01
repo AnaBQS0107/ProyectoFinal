@@ -15,7 +15,6 @@ if (isset($_GET['id'])) {
         $apellido1 = $_POST['Apellido1'];
         $apellido2 = $_POST['Apellido2'];
         $correo = $_POST['Correo_Electronico'];
-        $salario = $_POST['Salario'];
         $estacion_id = $_POST['Estacion_ID'];
         $rol_id = $_POST['Roles'];
 
@@ -27,7 +26,7 @@ if (isset($_GET['id'])) {
 
         try {
 
-            $query = "UPDATE trabajadores SET Nombre = :nombre, Cedula = :cedula, Contrasena = :contrasena, Apellido1 = :apellido1, Apellido2 = :apellido2, Correo_Electronico = :correo, Salario = :salario, Estacion_ID = :estacion_id, Rol_ID = :rol_id WHERE ID = :id";
+            $query = "UPDATE trabajadores SET Nombre = :nombre, Cedula = :cedula, Contrasena = :contrasena, Apellido1 = :apellido1, Apellido2 = :apellido2, Correo_Electronico = :correo,  Estacion_ID = :estacion_id, Rol_ID = :rol_id WHERE ID = :id";
             $stmt = $conn->prepare($query);
 
             $stmt->bindParam(':nombre', $nombre);
@@ -36,7 +35,7 @@ if (isset($_GET['id'])) {
             $stmt->bindParam(':apellido1', $apellido1);
             $stmt->bindParam(':apellido2', $apellido2);
             $stmt->bindParam(':correo', $correo);
-            $stmt->bindParam(':salario', $salario);
+
             $stmt->bindParam(':estacion_id', $estacion_id);
             $stmt->bindParam(':rol_id', $rol_id);
             $stmt->bindParam(':id', $id_empleado);
@@ -93,9 +92,6 @@ if (isset($_GET['id'])) {
                 <br>
                 <label>Correo Electrónico:</label>
                 <input type="text" name="Correo_Electronico" value="<?php echo isset($empleado['Correo_Electronico']) ? $empleado['Correo_Electronico'] : ''; ?>">
-                <br>
-                <label>Salario:</label>
-                <input type="text" name="Salario" value="<?php echo isset($empleado['Salario']) ? $empleado['Salario'] : ''; ?>">
                 <br>
                 <label>Estación ID:</label>
                 <input type="text" name="Estacion_ID" value="<?php echo isset($empleado['Estacion_ID']) ? $empleado['Estacion_ID'] : ''; ?>">

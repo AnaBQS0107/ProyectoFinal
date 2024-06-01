@@ -144,8 +144,8 @@ class TrabajadoresInfo
 
     public function procesarFormulario($data)
     {
-        $sql = "INSERT INTO trabajadores (Cedula, Contrasena, Nombre, Apellido1, Apellido2, Correo_Electronico, Salario, Estacion_ID, Rol_ID) 
-                VALUES (:cedula, :contrasena, :nombre, :apellido1, :apellido2, :correo_electronico, :salario, :estacion_id, :Rol_ID)";
+        $sql = "INSERT INTO trabajadores (Cedula, Contrasena, Nombre, Apellido1, Apellido2, Correo_Electronico,  Estacion_ID, Rol_ID) 
+                VALUES (:cedula, :contrasena, :nombre, :apellido1, :apellido2, :correo_electronico, :estacion_id, :Rol_ID)";
         $stmt = $this->db->prepare($sql);
 
         $stmt->bindParam(':cedula', $data['Cedula']);
@@ -154,7 +154,6 @@ class TrabajadoresInfo
         $stmt->bindParam(':apellido1', $data['Apellido1']);
         $stmt->bindParam(':apellido2', $data['Apellido2']);
         $stmt->bindParam(':correo_electronico', $data['Correo_Electronico']);
-        $stmt->bindParam(':salario', $data['Salario']);
         $stmt->bindParam(':estacion_id', $data['Estacion_ID']);
         $stmt->bindParam(':rol_id', $data['Rol_ID']);
 

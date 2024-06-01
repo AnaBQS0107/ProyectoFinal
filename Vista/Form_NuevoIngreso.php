@@ -54,11 +54,6 @@ require_once '../Modelo/Ingreso_Usuario.php';
                     <div class="invalid-tooltip"></div>
                 </div>
             </div>
-            <div class="col-md-6 position-relative">
-                <label for="salario" class="form-label">Salario</label>
-                <input type="text" class="form-control" id="salario" name="Salario" required>
-                <div class="invalid-tooltip"></div>
-            </div>
             <div class="col-md-3 position-relative">
                 <label for="estacion" class="form-label">Estación a la que pertenece</label>
                 <select class="form-select" id="estacion" name="Estacion_ID" required>
