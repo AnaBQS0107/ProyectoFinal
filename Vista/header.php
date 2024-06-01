@@ -46,6 +46,10 @@ $user = isset($_SESSION['user']) ? $_SESSION['user'] : null;
                             <a class="nav-link" href="../Vista/ListaDeEmpleados.php">Lista de Empleados</a>
                         </li>
 
+                        <li class="nav-item">
+                            <a class="nav-link" href="../Vista/CobrosPeaje.php">Cobrar Peajes</a>
+                        </li>
+
                     </ul>
                 </div>
             </div>

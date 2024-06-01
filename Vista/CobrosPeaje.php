@@ -18,7 +18,7 @@
         <h5>¿Cuál tipo de vehiculo pasará por la estación?</h5>
     </center>
     <br>
-    <div class="d-flex justify-content-center flex-wrap gap-3">
+    <div class="row justify-content-center gap-3">
         <div class="card border-success mb-3" style="max-width: 18rem;">
             <div class="card-header">Código: L</div>
             <div class="card-body text-success">
@@ -45,7 +45,6 @@
         </div>
     </div>
 
-    <!-- Resultado de la selección -->
     <table id="tabla" class="table">
         <thead>
             <tr>
@@ -53,6 +52,8 @@
                 <th scope="col">Tipo de Vehiculo</th>
                 <th scope="col">Código</th>
                 <th scope="col">Monto</th>
+                <th scope="col">Persona que lo tramita</th>
+                <th scope="col">Estación</th>
             </tr>
         </thead>
         <tbody class="table-group-divider">
