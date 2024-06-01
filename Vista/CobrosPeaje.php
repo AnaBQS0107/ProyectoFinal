@@ -73,7 +73,7 @@
             var xhr = new XMLHttpRequest();
             xhr.open("POST", "../Controlador/ObtenerDatosPeajes.php", true);
             xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            xhr.onreadystatechange = function () {
+            xhr.onreadystatechange = function() {
                 if (xhr.readyState == 4 && xhr.status == 200) {
                     document.querySelector("#tabla tbody").innerHTML = xhr.responseText;
                 }
@@ -96,7 +96,7 @@
                     var xhr = new XMLHttpRequest();
                     xhr.open("POST", "../Controlador/ObtenerDatosPeajes.php", true);
                     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-                    xhr.onreadystatechange = function () {
+                    xhr.onreadystatechange = function() {
                         if (xhr.readyState == 4 && xhr.status == 200) {
                             document.querySelector("#tabla tbody").innerHTML = xhr.responseText;
                         }
@@ -113,5 +113,7 @@
             });
         }
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

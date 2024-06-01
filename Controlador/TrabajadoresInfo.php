@@ -1,8 +1,5 @@
 <?php
-$host = "localhost:3307";
-$db_name = "servicio_autobuses";
-$username = "root";
-$password = ""; 
+include_once '../Config/config.php';
 
 try {
     $conn = new PDO("mysql:host=$host;dbname=$db_name", $username, $password);

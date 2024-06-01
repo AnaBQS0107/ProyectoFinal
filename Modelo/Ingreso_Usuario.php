@@ -1,38 +1,65 @@
 <?php
-class Database
-{
-    private $host = "localhost:3307";
-    private $db_name = "servicio_autobuses";
-    private $username = "root";
-    private $password = "";
-    public $conn;
+require_once '../Config/config.php';
 
+class Database {
+    private static $instance = null;
+    private $conn;
 
-    public function getConnection()
-    {
-        $this->conn = null;
+    private function __construct() {
         try {
-            $this->conn = new PDO("mysql:host=" . $this->host . ";dbname=" . $this->db_name, $this->username, $this->password);
-            $this->conn->exec("set names utf8");
+            $this->conn = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASSWORD);
+            $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
         } catch (PDOException $exception) {
             echo "Error de conexión: " . $exception->getMessage();
+            exit();
         }
+    }
+
+
+    public static function getInstance() {
+        if (self::$instance == null) {
+            self::$instance = new Database();
+        }
+        return self::$instance;
+    }
+
+    public function getConnection() {
         return $this->conn;
     }
 }
 
-class TrabajadoresTabla
-{
+
+class Cobro {
+    private $conn;
+
+    public function __construct($conn) {
+        $this->conn = $conn;
+    }
+
+    public function obtenerCobros() {
+        try {
+            $query = "SELECT Tipo_De_Vehiculo, Codigo, Monto, Tramitador, Estacion FROM cobros";
+            $stmt = $this->conn->prepare($query);
+            $stmt->execute();
+
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $exception) {
+            echo "Error en la consulta SQL: " . $exception->getMessage();
+            return [];
+        }
+    } 
+}
+
+class TrabajadoresTabla {
     private $db;
 
-    public function __construct()
-    {
+    public function __construct() {
         $database = new Database();
         $this->db = $database->getConnection();
     }
 
-    public function obtenerTodosLosTrabajadores()
-    {
+    public function obtenerTodosLosTrabajadores() {
         $query = "SELECT t.*, r.Tipo_De_Rol, e.Nombre AS Nombre_Estacion 
                   FROM trabajadores t
                   LEFT JOIN roles r ON t.Rol_ID = r.ID
@@ -42,16 +69,14 @@ class TrabajadoresTabla
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function obtenerNombreEstacion($estacionID)
-    {
+    public function obtenerNombreEstacion($estacionID) {
         $estacion = new Estacion($this->db);
         $result = $estacion->obtenerEstacionPorID($estacionID);
         $row = $result->fetch(PDO::FETCH_ASSOC);
         return $row['Nombre'];
     }
 
-    public function obtenerTipoDeRol($rolID)
-    {
+    public function obtenerTipoDeRol($rolID) {
         $rol = new Rol($this->db);
         $result = $rol->obtenerRolPorID($rolID);
         $row = $result->fetch(PDO::FETCH_ASSOC);
@@ -59,24 +84,21 @@ class TrabajadoresTabla
     }
 }
 
-
-class Rol
-{
+class Rol {
     private $conn;
     private $table_name = "roles";
 
-    public function __construct($db)
-    {
+    public function __construct($db) {
         $this->conn = $db;
     }
 
-    public function obtenerRoles()
-    {
+    public function obtenerRoles() {
         $query = "SELECT ID, Tipo_De_Rol FROM " . $this->table_name;
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
         return $stmt;
     }
+    
     public function obtenerRolPorID($rolID) {
         $query = "SELECT * FROM " . $this->table_name . " WHERE ID = :id";
         $stmt = $this->conn->prepare($query);
@@ -84,22 +106,17 @@ class Rol
         $stmt->execute();
         return $stmt;
     }
-   
 }
 
-
-class Estacion
-{
+class Estacion {
     private $conn;
     private $table_name = "estaciones";
 
-    public function __construct($db)
-    {
+    public function __construct($db) {
         $this->conn = $db;
     }
 
-    public function obtenerEstaciones()
-    {
+    public function obtenerEstaciones() {
         $query = "SELECT ID, Nombre FROM " . $this->table_name;
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
@@ -117,6 +134,7 @@ class Estacion
 
 
 
+
 class TrabajadoresInfo
 {
     private $db;
@@ -125,7 +143,7 @@ class TrabajadoresInfo
 
     public function __construct()
     {
-        $database = new Database();
+        $database = Database::getInstance();
         $this->db = $database->getConnection();
         $this->estacion = new Estacion($this->db);
         $this->rol = new Rol($this->db);
@@ -182,3 +200,6 @@ $resultRoles = $trabajadoresInfo->obtenerRoles();
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $trabajadoresInfo->procesarFormulario($_POST);
 }
+
+   
+
