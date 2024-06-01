@@ -7,6 +7,7 @@
     <title>Cobros -- PassWize</title>
     <link rel="icon" type="image/png" href="../img/icono.png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 </head>
 
 <body>
@@ -45,23 +46,30 @@
         </div>
     </div>
 
-    <table id="tabla" class="table">
-        <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Tipo de Vehiculo</th>
-                <th scope="col">Código</th>
-                <th scope="col">Monto</th>
-                <th scope="col">Persona que lo tramita</th>
-                <th scope="col">Estación</th>
-            </tr>
-        </thead>
-        <tbody class="table-group-divider">
-        </tbody>
-    </table>
+    <form id="pagoForm">
+        <input type="hidden" name="codigo" id="codigo">
+        <table id="tabla" class="table">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Tipo de Vehiculo</th>
+                    <th scope="col">Código</th>
+                    <th scope="col">Monto</th>
+                    <th scope="col">Persona que lo tramita</th>
+                    <th scope="col">Estación</th>
+                </tr>
+            </thead>
+            <tbody class="table-group-divider">
+            </tbody>
+        </table>
+        <br>
+        <center><button type="button" class="btn btn-success" onclick="confirmarPago()">Aceptar pago</button></center>
+    </form>
 
     <script>
         function seleccionar(codigo) {
+            document.getElementById('codigo').value = codigo;
+
             var xhr = new XMLHttpRequest();
             xhr.open("POST", "../Controlador/ObtenerDatosPeajes.php", true);
             xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -71,6 +79,38 @@
                 }
             };
             xhr.send("codigo=" + codigo);
+        }
+
+        function confirmarPago() {
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "¿Deseas proceder con el pago?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, pagar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var codigo = document.getElementById('codigo').value;
+                    var xhr = new XMLHttpRequest();
+                    xhr.open("POST", "../Controlador/ObtenerDatosPeajes.php", true);
+                    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                    xhr.onreadystatechange = function () {
+                        if (xhr.readyState == 4 && xhr.status == 200) {
+                            document.querySelector("#tabla tbody").innerHTML = xhr.responseText;
+                        }
+                    };
+                    xhr.send("codigo=" + codigo + "&insert=true");
+                    Swal.fire(
+                        'Pagado!',
+                        'El pago ha sido procesado.',
+                        'success'
+                    );
+                } else {
+                    document.querySelector("#tabla tbody").innerHTML = '';
+                }
+            });
         }
     </script>
 </body>
